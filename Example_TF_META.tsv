@@ -1,0 +1,5 @@
+Cell_Line	TF	CHIP_Peak_Counts	Binding_File	CHIP_Peaks	ATAC_Signal_File	ATAC_Peaks	Train_Test_Label
+CT1	Example_TF	588	/path/to/Example_TF__CT1.bw	/path/to/Example_TF__CT1.bed	/path/to/CT1_RP20M_minmax_percentile99.bw	/path/to/CT1_ext40_peaks.narrowPeak	Train
+CT2	Example_TF	16899	/path/to/Example_TF__CT2.bw	/path/to/Example_TF__CT2.bed	/path/to/CT2_RP20M_minmax_percentile99.bw	/path/to/CT2_ext40_peaks.narrowPeak	Train
+CT3	Example_TF	10559	/path/to/Example_TF__CT3.bw	/path/to/Example_TF__CT3.bed	/path/to/CT3_RP20M_minmax_percentile99.bw	/path/to/CT3_ext40_peaks.narrowPeak	Test
+CT4	Example_TF	19467	/path/to/Example_TF__CT4.bw	/path/to/Example_TF__CT4.bed	/path/to/CT4_RP20M_minmax_percentile99.bw	/path/to/CT4_ext40_peaks.narrowPeak	Train
