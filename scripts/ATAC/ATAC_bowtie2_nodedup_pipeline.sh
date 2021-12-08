@@ -38,9 +38,6 @@ echo "Slop Size: ${flanking_size}"
 echo "Millions factor: ${millions_factor}"
 
 ###SETUP###
-filtered=${name}_filtered.bam
-fix_mate=${name}_fixmate.bam
-deduped=${name}_deduped.bam
 final_bam=${name}_final.bam
 insertion_sites=${name}_IS.bed.gz
 Tn5_sites=${name}_IS_slop${flanking_size}.bed.gz
@@ -54,30 +51,11 @@ cd ${outDir}
 
 ###Process###
 echo "Filtering with Samtools"
-
-echo "Samtools sort reads by name for ${bam}"
-samtools sort -@ ${cores} -n -o ${filtered} ${bam}
-
-# Fixmate and sort by POSITION then index
-echo "Samtools fixmate on ${filtered}"
-samtools fixmate -@ ${cores} -m ${filtered} - | \
-samtools sort -@ ${cores} -o ${fix_mate} -
-samtools index -@ ${cores} ${fix_mate}
-rm ${filtered}
-
-# Mark duplicates, remove, sort, index
-echo "Remove duplicates from ${fix_mate}"
-samtools markdup -@ ${cores} -r -s ${fix_mate} - | \
-samtools sort -@ ${cores} -o ${deduped} -
-samtools index -@ ${cores} ${deduped}
-rm ${fix_mate} ${fix_mate}.bai
-
 # Remove singleton reads (-f 3) and unwanted chromosomes, sort, index. 
-echo "Remove unwanted chr from ${deduped}"
-samtools view -@ ${cores} -f 3 -b ${deduped} ${keepChr} | \
+echo "Remove unwanted chr from ${bam}"
+samtools view -@ ${cores} -f 3 -b ${bam} ${keepChr} | \
 samtools sort -@ ${cores} -o ${final_bam} -
 samtools index -@ ${cores} ${final_bam}
-rm ${deduped} ${deduped}.bai
 
 # Infer insertion sites at 1 bp resolution
 bedtools bamtobed -i ${final_bam} | \
