@@ -30,12 +30,11 @@ echo "Inputs:"
 echo "BAM: ${bam}"
 echo "Sample name: ${name}"
 echo "Cores: ${cores}"
-echo "Bowtie2 index: ${idxBowtie2}"
 echo "Chr Keep: ${keepChr}"
 echo "Blacklist: ${blacklist}"
 echo "Chr Sizes: ${chromSizes}"
 echo "Slop Size: ${flanking_size}"
-echo "Millions factor: ${millions_factor}"
+echo "Scale factor: ${scale_factor}"
 
 ###SETUP###
 final_bam=${name}_final.bam

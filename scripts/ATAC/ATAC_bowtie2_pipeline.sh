@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ################### ATAC_pipeline.sh ###################
-# Workflow to process ATAC-seq fastqs. This pipeline uses bowtie2 to map reads
+# Workflow to process ATAC-seq BAM. 
 
 # Inputs:
 # 1. BAM file
@@ -12,34 +12,39 @@
 # 6. Chromosome sizes file
 # 7. Flanking size or slop size to use for inferring Tn5 sites
 # 8. Millions factor for normalizing signal
+# 9. Deduplication flag. Whether to deduplicate or not: Choose deduplicate or skip
 
+# Outputs:
+# 1. sample_IS.bed: Insertion sites bed file
+# 2. Tn5 sites file: Insertion sites that have been slopped by flanking size base pairs
+# 3. RPM normalized bigwig: Reads per million normalized bigwig
 #########################################################
 
-###Inputs###
+### Inputs ###
 bam=${1}
 name=${2}
 outDir=${3}
 cores=${4}
-keepChr='chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 chr11 chr12 chr13 chr14 chr15 chr16 chr17 chr18 chr19 chr20 chr21 chr22'
 blacklist=${5}
 chromSizes=${6}
 flanking_size=${7}
 scale_factor=${8}
+dedup=${9}
 
+keepChr='chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 chr11 chr12 chr13 chr14 chr15 chr16 chr17 chr18 chr19 chr20 chr21 chr22'
+
+### Print Parameters ###
 echo "Inputs:"
 echo "BAM: ${bam}"
 echo "Sample name: ${name}"
 echo "Cores: ${cores}"
-echo "Bowtie2 index: ${idxBowtie2}"
 echo "Chr Keep: ${keepChr}"
 echo "Blacklist: ${blacklist}"
 echo "Chr Sizes: ${chromSizes}"
 echo "Slop Size: ${flanking_size}"
-echo "Millions factor: ${millions_factor}"
+echo "Scale factor: ${scale_factor}"
 
 ###SETUP###
-filtered=${name}_filtered.bam
-fix_mate=${name}_fixmate.bam
 deduped=${name}_deduped.bam
 final_bam=${name}_final.bam
 insertion_sites=${name}_IS.bed.gz
@@ -53,24 +58,39 @@ mkdir -p ${outDir}
 cd ${outDir}
 
 ###Process###
-echo "Filtering with Samtools"
+case ${dedup} in
+    deduplicate)
+            filtered=${name}_filtered.bam
+            fix_mate=${name}_fixmate.bam
 
-echo "Samtools sort reads by name for ${bam}"
-samtools sort -@ ${cores} -n -o ${filtered} ${bam}
+            echo "Filtering with Samtools"
 
-# Fixmate and sort by POSITION then index
-echo "Samtools fixmate on ${filtered}"
-samtools fixmate -@ ${cores} -m ${filtered} - | \
-samtools sort -@ ${cores} -o ${fix_mate} -
-samtools index -@ ${cores} ${fix_mate}
-rm ${filtered}
+            echo "Samtools sort reads by name for ${bam}"
+            samtools sort -@ ${cores} -n -o ${filtered} ${bam}
 
-# Mark duplicates, remove, sort, index
-echo "Remove duplicates from ${fix_mate}"
-samtools markdup -@ ${cores} -r -s ${fix_mate} - | \
-samtools sort -@ ${cores} -o ${deduped} -
-samtools index -@ ${cores} ${deduped}
-rm ${fix_mate} ${fix_mate}.bai
+            # Fixmate and sort by POSITION then index
+            echo "Samtools fixmate on ${filtered}"
+            samtools fixmate -@ ${cores} -m ${filtered} - | \
+            samtools sort -@ ${cores} -o ${fix_mate} -
+            samtools index -@ ${cores} ${fix_mate}
+            rm ${filtered}
+
+            # Mark duplicates, remove, sort, index
+            echo "Remove duplicates from ${fix_mate}"
+            samtools markdup -@ ${cores} -r -s ${fix_mate} - | \
+            samtools sort -@ ${cores} -o ${deduped} -
+            samtools index -@ ${cores} ${deduped}
+            rm ${fix_mate} ${fix_mate}.bai
+
+        ;;
+    skip)
+            # Sort and index file
+            samtools sort -@ ${cores} -o ${deduped} ${bam}
+            samtools index -@ ${cores} ${deduped}
+
+        ;;
+    *)
+esac
 
 # Remove singleton reads (-f 3) and unwanted chromosomes, sort, index. 
 echo "Remove unwanted chr from ${deduped}"
