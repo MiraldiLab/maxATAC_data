@@ -8,13 +8,13 @@ This repo contains the data in relation to the maxATAC project. For complete ins
 
 This directory contains:
 
-1. `hg38_maxatac_blacklist.bed`: maxATAC extended blacklist 
-2. `hg38_maxatac_blacklist.bw`: 
-3. `hg38.chrom.sizes`: chromosome sizes
+1. `hg38_maxatac_blacklist.bed`: bed file of maxATAC blacklist regions
+2. `hg38_maxatac_blacklist.bw`: bed file of maxATAC blacklist regions
+3. `hg38.chrom.sizes`: hg38 chromosome sizes file
 
 ## `./models`
 
-Information on 127 TF models trained. Each directory is a TF name. Each directory contains a `.h5` of the best TF model, a `.tsv` file of threshold statistics, and a `.png` of the statistcs. 
+Information for the 127 TF models available through maxATAC. Each directory is a TF name. Each directory contains a `.h5` of the best TF model, a `.tsv` file of threshold statistics, and a `.png` of the statistics.
 
 Example directory structure:
 
@@ -24,6 +24,24 @@ Example directory structure:
 | |____ATF2_binary_revcomp99_fullModel_RR0_73.h5
 | |____ATF2_validationPerformance_vs_thresholdCalibration.tsv
 ```
+
+### Example threshold statistics file
+
+This is an example of the first 6 lines of the threshold statistics file used to call peaks. The first column is the threshold. Every column after is the average performance reported for different metrics on validation chromosome 2.
+
+```pre
+Standard_Thresh	Monotonic_Avg_Precision	Monotonic_Avg_Recall	Monotonic_Avg_log2FC	Avg_F1
+0.0	0.0035793736711456103	0.9910269020975186	0.4617435633366975	0.0071224011910284366
+0.001	0.018103716393149	0.9242690259191988	2.996816276717381	0.03517534734171995
+0.002	0.027523721672056148	0.92192080328679	3.5979115724538913	0.05275399945034204
+0.003	0.03384312047545328	0.9123870842533509	3.8788363137406194	0.06429293366464785
+0.004	0.03872007478681639	0.9030209327592842	4.055800482157333	0.07305708818396862
+0.005	0.04270041191717275	0.9017292649083462	4.199724330597559	0.0801251221410759
+```
+
+### Example threshold statistics image
+
+![ARID3A Threshold Statistics](models/ELK1/ELK1_validationPerformance_vs_thresholdCalibration.png)
 
 ## `./scripts`
 
