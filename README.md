@@ -3,8 +3,7 @@
 
 # maxATAC Data
 
-This repo contains additional resources for the maxATAC Python package.
-
+This repo contains the data in relation to the maxATAC project. For complete installation directions of maxATAC please refer to the maxATAC repo, https://github.com/MiraldiLab/maxATAC
 ## `./hg38`
 
 This directory contains:
