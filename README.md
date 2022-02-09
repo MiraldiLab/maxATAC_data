@@ -12,6 +12,8 @@ This directory contains:
 2. `hg38_maxatac_blacklist.bw`: bed file of maxATAC blacklist regions
 3. `hg38.chrom.sizes`: hg38 chromosome sizes file
 
+Curation of the maxATAC black list is described in the [maxATAC preprint](https://www.biorxiv.org/content/10.1101/2022.01.28.478235v1.article-metrics)
+
 ## `./models`
 
 Information for the 127 TF models available through maxATAC. Each directory is a TF name. Each directory contains a `.h5` of the best TF model, a `.tsv` file of threshold statistics, and a `.png` of the statistics.
@@ -24,6 +26,8 @@ Example directory structure:
 | |____ATF2_binary_revcomp99_fullModel_RR0_73.h5
 | |____ATF2_validationPerformance_vs_thresholdCalibration.tsv
 ```
+
+By default, the threshold for calling TFBS is set to maximize the validation F1-score of the TF model. The threshold statistics file and image enables users to see the trade-offs between precision and recall for each model, information that could guide their parameter choices for [`maxatac predict`](https://github.com/MiraldiLab/maxATAC/blob/main/docs/readme/predict.md#Predict)
 
 ### Example threshold statistics file
 
