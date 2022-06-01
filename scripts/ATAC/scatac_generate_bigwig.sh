@@ -26,8 +26,7 @@ echo "Compressing files"
 cd ${6}
 
 pigz ${bed_name}
-pigz ${bedgraph_name}
 
-rm ${1}
+rm ${1} ${bedgraph_name} ${bed_name}
 
 echo "Done!"
