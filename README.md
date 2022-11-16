@@ -81,6 +81,20 @@ A directory of scripts that are used to process the ATAC-seq, DHS, and ChIP-seq 
 
 This `.tsv` file shows an example meta file required to train your own models. 
 
+## `./motifs`
+
+The directory of motif information from CISBP. There are two meta files, (1) a list of all TF motifs that have been curated and (2) metadata about family source, etc... from CISBP.
+
+```pre
+.
+|____20201001_all_motifs_meta.tsv
+|____CISBP_2_TF_Information_all_motifs_plus.txt
+|____all_motifs
+| |____M00008_2.00.pfm
+| |____M00009_2.00.pfm
+| |____...
+```
+
 ## Publication
 
 The maxATAC pre-print is currently available on [bioRxiv](https://www.biorxiv.org/content/10.1101/2022.01.28.478235v1.article-metrics). 
