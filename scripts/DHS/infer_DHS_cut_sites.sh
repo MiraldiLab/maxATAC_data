@@ -26,10 +26,11 @@ output_directory=${2}
 blacklist=${3}
 
 ### Build names ###
-cut_sites=`basename ${bam} _final.bam`_DHS_IS.bed.gz
+cut_sites=`basename ${bam} .bam`_DHS_IS.bed.gz
 
 # Make directory and change into it
 mkdir -p ${output_directory}
+cd ${output_directory}
 
 ### Process ###
 
