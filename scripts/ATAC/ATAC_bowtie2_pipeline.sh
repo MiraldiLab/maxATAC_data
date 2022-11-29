@@ -13,6 +13,7 @@
 # 7. Flanking size or slop size to use for inferring Tn5 sites
 # 8. Millions factor for normalizing signal
 # 9. Deduplication flag. Whether to deduplicate or not: Choose deduplicate or skip
+# 10. A string of chromosomes to limit the analysis to
 
 # Outputs:
 # 1. sample_IS.bed: Insertion sites bed file
@@ -30,8 +31,7 @@ chromSizes=${6}
 flanking_size=${7}
 scale_factor=${8}
 dedup=${9}
-
-keepChr='chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 chr11 chr12 chr13 chr14 chr15 chr16 chr17 chr18 chr19 chr20 chr21 chr22'
+keepChr=${10}
 
 ### Print Parameters ###
 echo "Inputs:"
